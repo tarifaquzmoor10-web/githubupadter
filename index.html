@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DiorNodes — Infrastructure Status</title>
+  <meta name="description" content="Live infrastructure status dashboard for DiorNodes hosting." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ─── Sidebar ─── -->
+<aside id="sidebar">
+  <div class="logo">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+    </svg>
+    <span>Dior<em>Nodes</em></span>
+  </div>
+  <nav>
+    <a href="#" class="active" data-page="dashboard">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    <a href="#" data-page="nodes">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+      Nodes
+    </a>
+  </nav>
+</aside>
+
+<!-- ─── Main ─── -->
+<main id="main">
+
+  <!-- Dashboard Page -->
+  <div class="page active" id="page-dashboard">
+
+    <!-- Status Banner -->
+    <div id="status-banner" class="operational">
+      <div class="status-dot">✓</div>
+      <div>
+        <div id="banner-title">All Systems Operational</div>
+        <div id="banner-sub">Infrastructure is running smoothly.</div>
+      </div>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>
+          Total Nodes
+        </div>
+        <div class="stat-value" id="s-total-nodes">—</div>
+        <div class="stat-sub" id="s-nodes-sub">Loading…</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>
+          Active Servers
+        </div>
+        <div class="stat-value" id="s-total-servers">—</div>
+        <div class="stat-sub">Across all nodes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          Avg CPU Usage
+        </div>
+        <div class="stat-value" id="s-cpu">—</div>
+        <div class="stat-sub">Across all nodes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Network Status
+        </div>
+        <div class="stat-value" id="s-network">—</div>
+        <div class="stat-sub" id="s-network-sub">Nodes online</div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-title">Global Compute Trend</div>
+        <div class="chart-sub">Aggregated CPU utilization across all nodes</div>
+        <div class="chart-wrap"><canvas id="chart-cpu"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Infrastructure Memory</div>
+        <div class="chart-sub">Total RAM allocation</div>
+        <div id="mem-display" style="padding-top:12px">
+          <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Used Memory</div>
+          <div id="s-mem-used" style="font-size:36px;font-weight:800;line-height:1">—</div>
+          <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:16px 0 6px">Total Capacity</div>
+          <div id="s-mem-total" style="font-size:36px;font-weight:800;line-height:1;color:var(--muted)">—</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Nodes Page -->
+  <div class="page" id="page-nodes">
+    <div class="section-header">
+      <h1>Node Slots</h1>
+      <p>Real-time resource usage across all infrastructure slots.</p>
+    </div>
+    <div class="slot-grid" id="slots-container">
+      <div class="loading-state">Loading nodes…</div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Refresh indicator -->
+<div id="refresh-bar">
+  <div class="spinner" id="spinner"></div>
+  <span id="refresh-text">Auto-refresh every 10s</span>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
